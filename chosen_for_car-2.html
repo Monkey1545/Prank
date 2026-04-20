@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚗 YOU'VE BEEN CHOSEN! 🚗</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial Black', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow: hidden;
+            perspective: 1000px;
+        }
+
+        .container {
+            text-align: center;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .confetti {
+            position: fixed;
+            pointer-events: none;
+            font-size: 2rem;
+            animation: fall 3s linear forwards;
+        }
+
+        .main-box {
+            background: linear-gradient(135deg, #ff6b6b, #ffd93d);
+            border-radius: 30px;
+            padding: 50px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.3);
+            border: 5px solid #fff;
+            max-width: 600px;
+            transform: scale(0.8);
+            animation: popup 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .main-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%);
+            animation: shimmer 2s infinite;
+        }
+
+        .content {
+            position: relative;
+            z-index: 2;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            color: #fff;
+            text-shadow: 3px 3px 0 #ff6b6b, 6px 6px 0 rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+            animation: bounce 1s ease-in-out 0.5s infinite;
+        }
+
+        .subtitle {
+            font-size: 2rem;
+            color: #fff;
+            text-shadow: 2px 2px 0 #764ba2;
+            margin: 20px 0;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .car-emoji {
+            font-size: 6rem;
+            margin: 20px 0;
+            animation: spin 2s linear infinite;
+            display: inline-block;
+        }
+
+        .stars {
+            font-size: 2.5rem;
+            margin: 10px;
+            display: inline-block;
+            animation: twinkle 0.6s ease-in-out infinite;
+        }
+
+        .button-group {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .claim-btn {
+            background: #fff;
+            color: #ff6b6b;
+            animation: wiggle 0.8s ease-in-out infinite;
+        }
+
+        .claim-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        .decline-btn {
+            background: rgba(255,255,255,0.3);
+            color: #fff;
+            border: 2px solid #fff;
+        }
+
+        .decline-btn:hover {
+            background: rgba(255,255,255,0.5);
+        }
+
+        .disclaimer {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.8);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .share-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 3px dashed rgba(255,255,255,0.5);
+        }
+
+        .share-label {
+            font-size: 1.1rem;
+            color: #fff;
+            text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+
+        .share-btn {
+            padding: 10px 16px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            border: 2px solid #fff;
+            border-radius: 10px;
+            cursor: pointer;
+            background: rgba(255,255,255,0.2);
+            color: #fff;
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+
+        .share-btn:hover {
+            background: rgba(255,255,255,0.4);
+            transform: scale(1.05);
+        }
+
+        .copy-section {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .copy-input {
+            padding: 10px 15px;
+            border: 2px solid #fff;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.9);
+            color: #ff6b6b;
+            font-weight: bold;
+            font-size: 0.85rem;
+            max-width: 250px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .copy-input:hover {
+            background: #fff;
+            transform: scale(1.02);
+        }
+
+        .copy-btn {
+            padding: 10px 16px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            border: 2px solid #fff;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.2);
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+
+        .copy-btn:hover {
+            background: rgba(255,255,255,0.4);
+            transform: scale(1.05);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #fff;
+            color: #ff6b6b;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-weight: bold;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            animation: slideUp 0.5s ease-out;
+            z-index: 2000;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateX(-50%) translateY(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Animations */
+        @keyframes popup {
+            from {
+                transform: scale(0.3) rotateX(90deg);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1) rotateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+        }
+
+        @keyframes spin {
+            from { transform: rotateZ(0deg); }
+            to { transform: rotateZ(360deg); }
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        @keyframes wiggle {
+            0%, 100% { transform: rotateZ(-2deg); }
+            50% { transform: rotateZ(2deg); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotateZ(360deg);
+                opacity: 0;
+            }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 400px;
+            color: white;
+            font-size: 2rem;
+            animation: slideDown 0.5s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="main-box">
+            <div class="content">
+                <div class="stars">⭐</div>
+                <h1 style="font-size: 2.5rem;">🎉 LIZ! 🎉</h1>
+                <h1>YOU'VE BEEN CHOSEN</h1>
+                <div class="car-emoji">🚗</div>
+                <div class="subtitle" style="font-size: 1.8rem; color: #fff; text-shadow: 2px 2px 0 #ff4757;">FOR A BRAND NEW CAR!</div>
+                <div class="stars">⭐</div>
+                
+                <p style="font-size: 1.1rem; color: #fff; text-shadow: 1px 1px 0 rgba(0,0,0,0.2); margin-top: 20px;">
+                    Act now! This exclusive offer is LIMITED TIME ONLY! ⏰
+                </p>
+                
+                <div class="button-group">
+                    <button class="claim-btn" onclick="celebrate()">CLAIM NOW!</button>
+                    <button class="decline-btn" onclick="decline()">Hang Up...</button>
+                </div>
+                
+                <div class="disclaimer">
+                    * Your extended warranty coverage is critical!<br>
+                    ⚠️ This is definitely 100% NOT a scam ⚠️
+                </div>
+
+                <div class="share-section">
+                    <div class="share-label">📤 SHARE WITH FRIENDS:</div>
+                    <div class="share-buttons" style="margin-top: 12px;">
+                        <button class="share-btn" onclick="shareViaEmail()">📧 Email</button>
+                        <button class="share-btn" onclick="shareViaText()">📱 Text</button>
+                        <button class="share-btn" onclick="shareViaMessenger()">💬 Messenger</button>
+                    </div>
+                    <p style="font-size: 0.85rem; color: rgba(255,255,255,0.9); margin-top: 12px;">
+                        👉 Click above to send this prank to friends instantly!
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="modal">
+        <div class="modal-content" style="background: linear-gradient(135deg, #ff6b6b 0%, #ffd93d 100%); padding: 0; border-radius: 20px; overflow: hidden; max-width: 500px;">
+            <svg viewBox="0 0 500 600" style="width: 100%; height: auto;">
+                <!-- Background -->
+                <rect width="500" height="600" fill="#FFD93D"/>
+                
+                <!-- Red warning stripe -->
+                <rect y="0" width="500" height="60" fill="#FF6B6B"/>
+                <text x="250" y="45" font-size="48" font-weight="bold" fill="white" text-anchor="middle">⚠️ WARNING ⚠️</text>
+                
+                <!-- Main text -->
+                <text x="250" y="120" font-size="44" font-weight="bold" fill="#FF6B6B" text-anchor="middle">YOUR WARRANTY</text>
+                <text x="250" y="170" font-size="44" font-weight="bold" fill="#FF6B6B" text-anchor="middle">IS EXPIRING!!!</text>
+                
+                <!-- Big car emoji -->
+                <text x="250" y="280" font-size="120" text-anchor="middle">🚗</text>
+                
+                <!-- Danger text -->
+                <text x="250" y="340" font-size="32" font-weight="bold" fill="#FF4757" text-anchor="middle">EXTENDED WARRANTY</text>
+                <text x="250" y="380" font-size="32" font-weight="bold" fill="#FF4757" text-anchor="middle">NEEDED NOW!</text>
+                
+                <!-- Bottom warning -->
+                <rect y="420" width="500" height="180" fill="#FF6B6B"/>
+                <text x="250" y="460" font-size="24" font-weight="bold" fill="white" text-anchor="middle">CLICK NOW TO</text>
+                <text x="250" y="500" font-size="24" font-weight="bold" fill="white" text-anchor="middle">PROTECT YOUR</text>
+                <text x="250" y="540" font-size="24" font-weight="bold" fill="white" text-anchor="middle">VEHICLE IMMEDIATELY!</text>
+            </svg>
+        </div>
+    </div>
+
+    <script>
+        // Create confetti
+        function createConfetti() {
+            const confettiPieces = ['🎉', '🎊', '⭐', '🚗', '💰', '🏆', '✨', '🎈'];
+            
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.textContent = confettiPieces[Math.floor(Math.random() * confettiPieces.length)];
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.top = '-10px';
+                    confetti.style.opacity = Math.random() * 0.5 + 0.5;
+                    confetti.style.fontSize = Math.random() * 1.5 + 1 + 'rem';
+                    document.body.appendChild(confetti);
+                    
+                    setTimeout(() => confetti.remove(), 3000);
+                }, i * 50);
+            }
+        }
+
+        function celebrate() {
+            createConfetti();
+            const modal = document.getElementById('modal');
+            modal.classList.add('active');
+            
+            // Play celebration sound effect using Web Audio API
+            playBeep();
+            
+            setTimeout(() => {
+                modal.classList.remove('active');
+            }, 6000);
+        }
+
+        function decline() {
+            alert('You have declined this AMAZING opportunity! 😢\n\nBut hey, you can always click "CLAIM NOW!" to change your mind! 🚗');
+        }
+
+        function shareText(text) {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'You Have Been CHOSEN! 🚗',
+                    text: text,
+                }).catch(err => {
+                    copyToClipboard(text);
+                    showToast('Text copied! Ready to share! 📋');
+                });
+            } else {
+                copyToClipboard(text);
+                showToast('Text copied! Ready to share! 📋');
+            }
+        }
+
+        function shareViaEmail() {
+            const subject = "🚗 YOU HAVE BEEN CHOSEN FOR A BRAND NEW CAR! 🚗";
+            const body = "Click this file to claim your prize!\n\nP.S. - This is definitely NOT a scam 😄";
+            alert('Right-click on chosen_for_car.html and email it to your friends!\n\nOr download this file and attach it to an email with this message:\n\n' + subject + '\n\n' + body);
+            showToast('📧 Email ready!');
+        }
+
+        function shareViaText() {
+            alert('Right-click on chosen_for_car.html\n\nSelect "Copy" and paste it into:\n• WhatsApp\n• iMessage\n• Discord\n• Slack\n\nOR just upload the file directly!\n\n😄 Watch them get pranked!');
+            showToast('📱 Ready to prank!');
+        }
+
+        function shareViaMessenger() {
+            alert('Upload chosen_for_car.html to:\n\n• Facebook Messenger\n• WhatsApp\n• Discord\n• Slack\n• Telegram\n\nYour friends click it and GET PRANKED! 🚗');
+            showToast('💬 Let the pranking begin!');
+        }
+
+        function copyToClipboard(text) {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text).catch(err => {
+                    console.error('Failed to copy:', err);
+                });
+            } else {
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+            }
+        }
+
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideUp 0.5s ease-out reverse';
+                setTimeout(() => toast.remove(), 500);
+            }, 3000);
+        }
+
+        function playBeep() {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = 800;
+            oscillator.type = 'sine';
+            
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.5);
+        }
+
+        // Start confetti animation on load
+        window.addEventListener('load', createConfetti);
+    </script>
+</body>
+</html>
